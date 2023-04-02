@@ -11,10 +11,10 @@ package copiaavancecurricular;
 
 import java.io.*;
 import java.util.*;
+import java.io.FileWriter;
 
 
-
-public class CopiaAvanceCurricular {
+public class AvanceCurricular {
     
     private HashMap <String,Estudiante> mapaEstudiante = new HashMap();
     private HashMap <String,Asignatura> mapaAsignatura = new HashMap();
@@ -23,8 +23,8 @@ public class CopiaAvanceCurricular {
     public static void main(String[] args) throws IOException {
         int opcion;
         boolean salir = true;
-        CopiaAvanceCurricular ac = new CopiaAvanceCurricular(); 
-        
+        AvanceCurricular ac = new AvanceCurricular(); 
+        csv leercsv = new csv();
         BufferedReader leer = new BufferedReader(new InputStreamReader(System.in));
         
         while(salir){
@@ -32,6 +32,8 @@ public class CopiaAvanceCurricular {
             System.out.println("2. Ingresar una asignatura");
             System.out.println("3. Ingresar asignaturas a un estudiante");
             System.out.println("4. Mostrar datos del estudiante");
+            System.out.println("5. Mostrar todos los estudiantes ");
+            System.out.println("6. Mostrar todas las asignaturas ");
             System.out.println("0. Salir");
             System.out.print("Ingrese opcion: ");
             opcion = Integer.parseInt(leer.readLine());
@@ -52,6 +54,14 @@ public class CopiaAvanceCurricular {
                     ac.mostrarDatosEstudiante();
                     break;
                 }
+                case 5:{
+                    leercsv.leerAlumno();
+                    break;
+                }
+                case 6:{
+                    leercsv.leerAsignatura();
+                    break;
+                }
                 case 0:{
                     System.out.println("Programa finalizado.");
                     salir = false;
@@ -60,27 +70,41 @@ public class CopiaAvanceCurricular {
             }
         }
     }
-    w
     public void ingresarEstudiante() throws IOException{
-        System.out.println("Ingrese rut: ");
-        String rut = hh.readLine();
-        System.out.println("Ingrese nombre: ");
-        String nombreE = hh.readLine();
-        System.out.println("Ingrese año de ingreso: ");
-        int año = Integer.parseInt(hh.readLine());
-        
-        Estudiante estudiante = new Estudiante(nombreE, año, rut);
-        mapaEstudiante.put(rut, estudiante);  
+        String ruta = "alumnos.csv";
+        try (FileWriter fw = new FileWriter(ruta, true)){
+            System.out.println("Ingrese rut: ");
+            String rut = hh.readLine();
+            System.out.println("Ingrese nombre: ");
+            String nombreE = hh.readLine();
+            System.out.println("Ingrese año de ingreso: ");
+            String año = hh.readLine();
+            Estudiante estudiante = new Estudiante(nombreE, año, rut);
+            mapaEstudiante.put(rut, estudiante);
+            fw.append("\n"); // salto de línea para agregar los datos en una nueva línea
+            fw.append(rut).append(",");
+            fw.append(nombreE).append(",");
+            fw.append(año);
+        }catch (IOException e) {
+         System.out.println("Error");
+      }
     }
     
     public void ingresarAsignatura() throws IOException{
-        System.out.println("Ingrese nombre asignatura: ");
-        String nombreA = hh.readLine();
-        System.out.println("Ingrese id: ");
-        String id = hh.readLine();
-        
-        Asignatura asignatura = new Asignatura(nombreA, id);
-        mapaAsignatura.put(id, asignatura);
+        String ruta = "asignaturas.csv";
+        try (FileWriter fw = new FileWriter(ruta, true)){
+            System.out.println("Ingrese nombre asignatura: ");
+            String nombreA = hh.readLine();
+            System.out.println("Ingrese id: ");
+            String id = hh.readLine();
+            Asignatura asignatura = new Asignatura(nombreA, id);
+            mapaAsignatura.put(id, asignatura);
+            fw.append("\n"); // salto de línea para agregar los datos en una nueva línea
+            fw.append(nombreA).append(",");
+            fw.append(id);
+        }catch (IOException e) {
+         System.out.println("Error");
+      }
     }
     
     public void agregarAsignaturaEstudiante() throws IOException{

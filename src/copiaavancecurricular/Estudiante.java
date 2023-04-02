@@ -24,20 +24,19 @@ public class Estudiante {
     private String nombreEstudiante;
     private ArrayList<Asignatura> asignaturasAprobadas = new ArrayList();
     //private HashMap <String,Asignaturas> asignaturasVigentes = new HashMap();
-    private int añoIngreso;
+    private String añoIngreso;
     private String rut;
     
     
     /*public HashMap<String, Asignaturas> getAsignaturasVigentes() {
         return asignaturasVigentes;
     }
-
     
     public void setAsignaturasVigentes(HashMap<String, Asignaturas> asignaturasVigentes) {
         this.asignaturasVigentes = asignaturasVigentes;
     }*/  
 
-    public Estudiante(String nombreEstudiante, int añoIngreso, String rut) {
+    public Estudiante(String nombreEstudiante, String añoIngreso, String rut) {
         this.nombreEstudiante = nombreEstudiante;
         this.añoIngreso = añoIngreso;
         this.rut = rut;
@@ -59,11 +58,11 @@ public class Estudiante {
         this.nombreEstudiante = nombreEstudiante;
     }
     
-    public int getAñoIngreso() {
+    public String getAñoIngreso() {
         return añoIngreso;
     }
 
-    public void setAñoIngreso(int añoIngreso) {
+    public void setAñoIngreso(String añoIngreso) {
         this.añoIngreso = añoIngreso;
     }
 
@@ -79,6 +78,4 @@ public class Estudiante {
         Asignatura asignatura = new Asignatura(nombre, id);
         asignaturasAprobadas.add(asignatura);
     }
-    
 }
-
