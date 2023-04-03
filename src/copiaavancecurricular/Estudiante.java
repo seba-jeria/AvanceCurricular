@@ -70,6 +70,7 @@ public class Estudiante {
         this.rut = rut;
     }
     
+    //Se encarga de agregar una asignatura a la lista de asignaturasAprobadas
     public void agregarAsignaturas(String nombre, String id){
         Asignatura asignatura = new Asignatura(nombre, id);
         asignaturasAprobadas.add(asignatura);

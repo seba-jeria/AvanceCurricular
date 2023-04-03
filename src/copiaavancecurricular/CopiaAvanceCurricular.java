@@ -16,6 +16,7 @@ import java.io.FileWriter;
 
 public class CopiaAvanceCurricular {
     
+    //mapas globales y BefferdReader golbal para las funciones
     private HashMap <String,Estudiante> mapaEstudiante = new HashMap();
     private HashMap <String,Asignatura> mapaAsignatura = new HashMap();
     BufferedReader hh = new BufferedReader(new InputStreamReader(System.in));
@@ -26,10 +27,12 @@ public class CopiaAvanceCurricular {
         CopiaAvanceCurricular ac = new CopiaAvanceCurricular(); 
         BufferedReader leer = new BufferedReader(new InputStreamReader(System.in));
         
+        //llamado de funciones para leer los csvs
         ac.leerAlumno();
         ac.leerAsignatura();
         
         while(salir){
+            //menu
             System.out.println("1. Ingresar estudiante manualmente");
             System.out.println("2. Ingresar una asignatura al sistema");
             System.out.println("3. Ingresar asignaturas a un estudiante");
@@ -73,6 +76,7 @@ public class CopiaAvanceCurricular {
         }
     }
     
+    //funcion que lee los alumnos de un csv y los carga en un mapa
     public  void leerAlumno() {
         String ruta = "alumnos.csv";
         try (BufferedReader br = new BufferedReader(new FileReader(ruta))) {
@@ -106,21 +110,7 @@ public class CopiaAvanceCurricular {
         }
     }
     
-    public void mostrarEstudiantes(){
-        for (HashMap.Entry <String, Estudiante> entrada : mapaEstudiante.entrySet()) {
-            Estudiante estudiante = entrada.getValue();
-            System.out.println("Rut: "+estudiante.getRut()+" | Nombre: "+estudiante.getNombreEstudiante()+" | Ingreso: "
-                    +estudiante.getAñoIngreso());
-        }
-    }
-    
-    public void mostrarAsignaturas(){
-        for(HashMap.Entry <String, Asignatura> entrada : mapaAsignatura.entrySet()){
-            Asignatura asignatura = entrada.getValue();
-            System.out.println("Id: "+asignatura.getIdAsignatura()+" | Nombre: "+asignatura.getNombreAsignatura());
-        }
-    }
-    
+    //funcion que lee las asignaturas de un csv y los carga en un mapa
     public  void leerAsignatura() {
         String ruta = "asignaturas.csv";
         try (BufferedReader br = new BufferedReader(new FileReader(ruta))) {
@@ -151,11 +141,30 @@ public class CopiaAvanceCurricular {
             System.out.println("Error");
         }
     }
-        
+    
+    //muestra los estudiantes de un mapa
+    public void mostrarEstudiantes(){
+        for (HashMap.Entry <String, Estudiante> entrada : mapaEstudiante.entrySet()) {
+            Estudiante estudiante = entrada.getValue();
+            System.out.println("Rut: "+estudiante.getRut()+" | Nombre: "+estudiante.getNombreEstudiante()+" | Ingreso: "
+                    +estudiante.getAñoIngreso());
+        }
+    }
+    
+    //muestra las asignaturas de un mapa
+    public void mostrarAsignaturas(){
+        for(HashMap.Entry <String, Asignatura> entrada : mapaAsignatura.entrySet()){
+            Asignatura asignatura = entrada.getValue();
+            System.out.println("Id: "+asignatura.getIdAsignatura()+" | Nombre: "+asignatura.getNombreAsignatura());
+        }
+    }
+    
+    //Ingresa estudiante al mapa    
     public void ingresarEstudiante(Estudiante estudiante) throws IOException{
         mapaEstudiante.put(estudiante.getRut(), estudiante);
     }
-        
+    
+    //Ingresa manualmente los alumnos a un mapa y los guarda en un csv especifico
     public void ingresarEstudiante() throws IOException{
         String ruta = "alumnos.csv";
         try (FileWriter fw = new FileWriter(ruta, true)){
@@ -176,10 +185,12 @@ public class CopiaAvanceCurricular {
       }
     }
     
+    //Ingresa las asignaturas a un mapa
     public void ingresarAsignatura(Asignatura asignatura){
         mapaAsignatura.put(asignatura.getIdAsignatura(), asignatura);
     }
     
+    //Ingresa manualmente las asignaturas a un mapa y los guarda en un csv
     public void ingresarAsignatura() throws IOException{
         String ruta = "asignaturas.csv";
         try (FileWriter fw = new FileWriter(ruta, true)){
@@ -197,6 +208,7 @@ public class CopiaAvanceCurricular {
       }
     }
     
+    //Asigna una asignatura aprobada a un estudiante mediante la clave de esta
     public void agregarAsignaturaEstudiante() throws IOException{
         System.out.println("Ingrese rut: ");
         String rut = hh.readLine();
@@ -222,6 +234,8 @@ public class CopiaAvanceCurricular {
             System.out.println("Estudiante no encontrado");
         }
     }
+    
+    //Muestra los datos del estudiante y las asignaturas aprobadas
     public void mostrarDatosEstudiante() throws IOException{
         
         System.out.println("Ingrese rut del Estudiante: ");
