@@ -5,7 +5,8 @@ Para instalar y ejecutar el proyecto hay que seguir los siguientes pasos:
 3. Cargar el proyecto.
 4. Click en la pestaña RUN y seleccionar "RUN PROJECT" o "(F6)"
 #
-Tema: Avance curricular Gestión de avance curricular de los alumnos en un institutoRegistro de alumnos, profesores, asignaturas y de nivel de avance de un alumno dependiendo de su avance en la malla. 
+Tema: Avance curricular Gestión de avance curricular de los alumnos en un instituto. Registro de alumnos, profesores, asignaturas y de nivel de avance de un alumno dependiendo de su avance en la malla. 
+#
 ### Integrantes ICI (malla nueva)
 - Luciano Cubillos
 - Sebastian Jeria
