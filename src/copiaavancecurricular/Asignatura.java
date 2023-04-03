@@ -21,10 +21,14 @@ public class Asignatura {
     private String nombreAsignatura;
     private String idAsignatura;
 
-
     public Asignatura(String nombreAsignatura, String idAsignatura) {
         this.nombreAsignatura = nombreAsignatura;
         this.idAsignatura = idAsignatura;
+    }
+    
+    public Asignatura(){
+        this.nombreAsignatura = null;
+        this.idAsignatura = null;
     }
 
     public String getNombreAsignatura() {
@@ -42,5 +46,5 @@ public class Asignatura {
     public void setIdAsignatura(String idAsignatura) {
         this.idAsignatura = idAsignatura;
     }
-   
+
 }

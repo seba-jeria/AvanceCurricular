@@ -23,23 +23,19 @@ import java.util.*;
 public class Estudiante {
     private String nombreEstudiante;
     private ArrayList<Asignatura> asignaturasAprobadas = new ArrayList();
-    //private HashMap <String,Asignaturas> asignaturasVigentes = new HashMap();
     private String añoIngreso;
     private String rut;
-    
-    
-    /*public HashMap<String, Asignaturas> getAsignaturasVigentes() {
-        return asignaturasVigentes;
-    }
-    
-    public void setAsignaturasVigentes(HashMap<String, Asignaturas> asignaturasVigentes) {
-        this.asignaturasVigentes = asignaturasVigentes;
-    }*/  
 
     public Estudiante(String nombreEstudiante, String añoIngreso, String rut) {
         this.nombreEstudiante = nombreEstudiante;
         this.añoIngreso = añoIngreso;
         this.rut = rut;
+    }
+    
+    public Estudiante() {
+        this.nombreEstudiante = null;
+        this.añoIngreso = null;
+        this.rut = null;
     }
 
     public ArrayList<Asignatura> getAsignaturasAprobadas() {

@@ -14,7 +14,7 @@ import java.util.*;
 import java.io.FileWriter;
 
 
-public class AvanceCurricular {
+public class CopiaAvanceCurricular {
     
     private HashMap <String,Estudiante> mapaEstudiante = new HashMap();
     private HashMap <String,Asignatura> mapaAsignatura = new HashMap();
@@ -23,17 +23,19 @@ public class AvanceCurricular {
     public static void main(String[] args) throws IOException {
         int opcion;
         boolean salir = true;
-        AvanceCurricular ac = new AvanceCurricular(); 
-        csv leercsv = new csv();
+        CopiaAvanceCurricular ac = new CopiaAvanceCurricular(); 
         BufferedReader leer = new BufferedReader(new InputStreamReader(System.in));
         
+        ac.leerAlumno();
+        ac.leerAsignatura();
+        
         while(salir){
-            System.out.println("1. Ingresar estudiante");
-            System.out.println("2. Ingresar una asignatura");
+            System.out.println("1. Ingresar estudiante manualmente");
+            System.out.println("2. Ingresar una asignatura al sistema");
             System.out.println("3. Ingresar asignaturas a un estudiante");
-            System.out.println("4. Mostrar datos del estudiante");
-            System.out.println("5. Mostrar todos los estudiantes ");
-            System.out.println("6. Mostrar todas las asignaturas ");
+            System.out.println("4. Mostrar informacion del estudiante");
+            System.out.println("5. Mostrar todos los estudiantes");
+            System.out.println("6. Mostrar todas las asignaturas");
             System.out.println("0. Salir");
             System.out.print("Ingrese opcion: ");
             opcion = Integer.parseInt(leer.readLine());
@@ -55,11 +57,11 @@ public class AvanceCurricular {
                     break;
                 }
                 case 5:{
-                    leercsv.leerAlumno();
+                    ac.mostrarEstudiantes();
                     break;
                 }
                 case 6:{
-                    leercsv.leerAsignatura();
+                    ac.mostrarAsignaturas();
                     break;
                 }
                 case 0:{
@@ -70,6 +72,90 @@ public class AvanceCurricular {
             }
         }
     }
+    
+    public  void leerAlumno() {
+        String ruta = "alumnos.csv";
+        try (BufferedReader br = new BufferedReader(new FileReader(ruta))) {
+            String linea;
+        
+            while ((linea = br.readLine()) != null) {
+                String[] datos = linea.split(",");
+                Estudiante estudiante = new Estudiante();
+                int i = 0; 
+
+                for (String dato : datos) {
+                   i++;
+
+                   switch(i){
+                    case 1:{
+                        estudiante.setRut(dato);
+                    }
+                    case 2:{
+                        estudiante.setNombreEstudiante(dato);
+                    }
+                    case 3:{
+                        estudiante.setAñoIngreso(dato);
+                    }
+                   }
+                }
+                System.out.println(); // salto de línea para la siguiente fila
+                ingresarEstudiante(estudiante);
+            }
+        } catch (IOException e) {
+            System.out.println("Error");
+        }
+    }
+    
+    public void mostrarEstudiantes(){
+        for (HashMap.Entry <String, Estudiante> entrada : mapaEstudiante.entrySet()) {
+            Estudiante estudiante = entrada.getValue();
+            System.out.println("Rut: "+estudiante.getRut()+" | Nombre: "+estudiante.getNombreEstudiante()+" | Ingreso: "
+                    +estudiante.getAñoIngreso());
+        }
+    }
+    
+    public void mostrarAsignaturas(){
+        for(HashMap.Entry <String, Asignatura> entrada : mapaAsignatura.entrySet()){
+            Asignatura asignatura = entrada.getValue();
+            System.out.println("Id: "+asignatura.getIdAsignatura()+" | Nombre: "+asignatura.getNombreAsignatura());
+        }
+    }
+    
+    public  void leerAsignatura() {
+        String ruta = "asignaturas.csv";
+        try (BufferedReader br = new BufferedReader(new FileReader(ruta))) {
+            String linea;
+
+            while ((linea = br.readLine()) != null) {
+               String[] datos = linea.split(",");
+               Asignatura asignatura = new Asignatura();
+               int i = 0;
+               
+               for (String dato : datos) {
+                  i++;
+                  
+                  switch(i){
+                      case 1:{
+                          asignatura.setNombreAsignatura(dato);
+                      }
+                      case 2:{
+                          asignatura.setIdAsignatura(dato);
+                      }
+                  }
+               }
+               ingresarAsignatura(asignatura);
+               System.out.println(); // salto de linea para la siguiente fila
+
+           }
+        } catch (IOException e) {
+            System.out.println("Error");
+        }
+    }
+        
+    public void ingresarEstudiante(Estudiante estudiante) throws IOException{
+        mapaEstudiante.put(estudiante.getRut(), estudiante);
+    }
+        
     public void ingresarEstudiante() throws IOException{
         String ruta = "alumnos.csv";
         try (FileWriter fw = new FileWriter(ruta, true)){
@@ -88,6 +174,10 @@ public class AvanceCurricular {
         }catch (IOException e) {
          System.out.println("Error");
       }
+    }
+    
+    public void ingresarAsignatura(Asignatura asignatura){
+        mapaAsignatura.put(asignatura.getIdAsignatura(), asignatura);
     }
     
     public void ingresarAsignatura() throws IOException{
