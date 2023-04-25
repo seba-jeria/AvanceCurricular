@@ -18,33 +18,36 @@ package copiaavancecurricular;
  * @author seba
  */
 public class Asignatura {
-    private String nombreAsignatura;
-    private String idAsignatura;
-
+    private String nombre;
+    private String id;
+    
     public Asignatura(String nombreAsignatura, String idAsignatura) {
-        this.nombreAsignatura = nombreAsignatura;
-        this.idAsignatura = idAsignatura;
+        this.nombre = nombreAsignatura;
+        this.id = idAsignatura;
     }
     
     public Asignatura(){
-        this.nombreAsignatura = null;
-        this.idAsignatura = null;
+        this.nombre = null;
+        this.id = null;
     }
 
-    public String getNombreAsignatura() {
-        return nombreAsignatura;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setNombreAsignatura(String nombreAsignatura) {
-        this.nombreAsignatura = nombreAsignatura;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
-    public String getIdAsignatura() {
-        return idAsignatura;
+    public String getId() {
+        return id;
     }
 
-    public void setIdAsignatura(String idAsignatura) {
-        this.idAsignatura = idAsignatura;
+    public void setId(String id) {
+        this.id = id;
     }
+
+    
+
 
 }

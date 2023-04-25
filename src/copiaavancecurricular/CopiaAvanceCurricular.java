@@ -10,33 +10,34 @@ package copiaavancecurricular;
  */
 
 import java.io.*;
-import java.util.*;
 import java.io.FileWriter;
 
 
 public class CopiaAvanceCurricular {
-    
-    //mapas globales y BefferdReader golbal para las funciones
-    private HashMap <String,Estudiante> mapaEstudiante = new HashMap();
-    private HashMap <String,Asignatura> mapaAsignatura = new HashMap();
-    BufferedReader hh = new BufferedReader(new InputStreamReader(System.in));
+    static Carrera miCarrera;
+
 
     public static void main(String[] args) throws IOException {
         int opcion;
         boolean salir = true;
-        CopiaAvanceCurricular ac = new CopiaAvanceCurricular(); 
+        miCarrera = new Carrera(); 
         BufferedReader leer = new BufferedReader(new InputStreamReader(System.in));
         
+        System.out.println("**************************************************");
+        System.out.println("BIENVENIDO");
+        System.out.println("**************************************************");
+        
         //llamado de funciones para leer los csvs
-        ac.leerAlumno();
-        ac.leerAsignatura();
+        leerAlumno();
+        leerAsignatura();
         
         while(salir){
             //menu
-            System.out.println("1. Ingresar estudiante manualmente");
-            System.out.println("2. Ingresar una asignatura al sistema");
-            System.out.println("3. Ingresar asignaturas a un estudiante");
-            System.out.println("4. Mostrar informacion del estudiante");
+            System.out.println("1. Añadir estudiante manualmente al sistema");
+            System.out.println("2. Añadir una asignatura manualmente al sistema");
+            System.out.println("3. Ingresar asignatura aprobada a un estudiante");
+            System.out.print("4. Mostrar informacion del estudiante");
+            System.out.println(" ( coleccion de asignaturas aprobadas )");
             System.out.println("5. Mostrar todos los estudiantes");
             System.out.println("6. Mostrar todas las asignaturas");
             System.out.println("0. Salir");
@@ -44,32 +45,53 @@ public class CopiaAvanceCurricular {
             opcion = Integer.parseInt(leer.readLine());
             switch (opcion) {
                 case 1:{
-                    ac.ingresarEstudiante();
+                    System.out.println("_________________________________________________");
+                    ingresarEstudiante();
+                    System.out.println("_________________________________________________");
                     break;
                 }
                 case 2:{
-                    ac.ingresarAsignatura();
+                    System.out.println("_________________________________________________");
+                    annadirRamo();
+                    System.out.println("_________________________________________________");
                     break;
                 }
                 case 3:{
-                   ac.agregarAsignaturaEstudiante();
+                   System.out.println("_________________________________________________");
+                   agregarAsignatura();
+                   System.out.println("_________________________________________________");
                    break;
                 } 
                 case 4:{
-                    ac.mostrarDatosEstudiante();
+                    System.out.println("_________________________________________________");
+                    mostrarDatosEstudiante();
+                    System.out.println("_________________________________________________");
                     break;
                 }
                 case 5:{
-                    ac.mostrarEstudiantes();
+                    System.out.println("_________________________________________________");
+                    mostrarEstudiantes();
+                    System.out.println("_________________________________________________");
                     break;
                 }
                 case 6:{
-                    ac.mostrarAsignaturas();
+                    System.out.println("_________________________________________________");
+                    mostrarAsignaturas();
+                    System.out.println("_________________________________________________");
                     break;
                 }
                 case 0:{
-                    System.out.println("Programa finalizado.");
+                    System.out.println("\nPrograma finalizado...");
                     salir = false;
+                    break;
+                }
+                default:{
+                    
+                    System.out.println("Instruccion incorrecta\n");
+                    System.out.println("Para volver ingrese cualquier caracter");
+                    String aux;
+                    aux = leer.readLine();
+                    System.out.println("");
                     break;
                 }
             }
@@ -77,7 +99,7 @@ public class CopiaAvanceCurricular {
     }
     
     //funcion que lee los alumnos de un csv y los carga en un mapa
-    public  void leerAlumno() {
+    public static  void leerAlumno() {
         String ruta = "alumnos.csv";
         try (BufferedReader br = new BufferedReader(new FileReader(ruta))) {
             String linea;
@@ -95,23 +117,22 @@ public class CopiaAvanceCurricular {
                         estudiante.setRut(dato);
                     }
                     case 2:{
-                        estudiante.setNombreEstudiante(dato);
+                        estudiante.setNombre(dato);
                     }
                     case 3:{
-                        estudiante.setAñoIngreso(dato);
+                        estudiante.setAnnoIngreso(dato);
                     }
                    }
                 }
-                System.out.println(); // salto de línea para la siguiente fila
-                ingresarEstudiante(estudiante);
+                //System.out.println(); // salto de línea para la siguiente fila
+                miCarrera.agregarEstudiante(estudiante);
             }
         } catch (IOException e) {
             System.out.println("Error");
         }
     }
-    
     //funcion que lee las asignaturas de un csv y los carga en un mapa
-    public  void leerAsignatura() {
+    public static  void leerAsignatura() {
         String ruta = "asignaturas.csv";
         try (BufferedReader br = new BufferedReader(new FileReader(ruta))) {
             String linea;
@@ -126,46 +147,49 @@ public class CopiaAvanceCurricular {
                   
                   switch(i){
                       case 1:{
-                          asignatura.setNombreAsignatura(dato);
+                          asignatura.setNombre(dato);
                       }
                       case 2:{
-                          asignatura.setIdAsignatura(dato);
+                          asignatura.setId(dato);
                       }
                   }
                }
-               ingresarAsignatura(asignatura);
-               System.out.println(); // salto de linea para la siguiente fila
-
+               //System.out.println(); // salto de linea para la siguiente fila
+               miCarrera.annadirRamo(asignatura);
            }
         } catch (IOException e) {
             System.out.println("Error");
         }
     }
-    
-    //muestra los estudiantes de un mapa
-    public void mostrarEstudiantes(){
-        for (HashMap.Entry <String, Estudiante> entrada : mapaEstudiante.entrySet()) {
-            Estudiante estudiante = entrada.getValue();
-            System.out.println("Rut: "+estudiante.getRut()+" | Nombre: "+estudiante.getNombreEstudiante()+" | Ingreso: "
-                    +estudiante.getAñoIngreso());
-        }
+    //Ingresa manualmente las asignaturas a un mapa y los guarda en un csv
+    public static void annadirRamo() throws IOException{
+        BufferedReader hh = new BufferedReader(new InputStreamReader(System.in));
+        String ruta = "asignaturas.csv";
+        try (FileWriter fw = new FileWriter(ruta, true)){
+            System.out.println("Ingrese nombre asignatura: ");
+            String nombreA = hh.readLine();
+            System.out.println("Ingrese id: ");
+            String id = hh.readLine();
+            Asignatura asignatura = new Asignatura(nombreA, id);
+            if(miCarrera.annadirRamo(asignatura)){
+                fw.append("\n"); // salto de línea para agregar los datos en una nueva línea
+                fw.append(nombreA).append(",");
+                fw.append(id);
+                System.out.println("Asignatura ingresada al sistema :)");
+            }
+            else{
+                System.out.println("Error. No se ha ingresado la asignatura");
+            }
+                
+        }catch (IOException e) {
+         System.out.println("Error");
+      }
     }
     
-    //muestra las asignaturas de un mapa
-    public void mostrarAsignaturas(){
-        for(HashMap.Entry <String, Asignatura> entrada : mapaAsignatura.entrySet()){
-            Asignatura asignatura = entrada.getValue();
-            System.out.println("Id: "+asignatura.getIdAsignatura()+" | Nombre: "+asignatura.getNombreAsignatura());
-        }
-    }
-    
-    //Ingresa estudiante al mapa    
-    public void ingresarEstudiante(Estudiante estudiante) throws IOException{
-        mapaEstudiante.put(estudiante.getRut(), estudiante);
-    }
     
     //Ingresa manualmente los alumnos a un mapa y los guarda en un csv especifico
-    public void ingresarEstudiante() throws IOException{
+    public static void ingresarEstudiante() throws IOException{
+        BufferedReader hh = new BufferedReader(new InputStreamReader(System.in));
         String ruta = "alumnos.csv";
         try (FileWriter fw = new FileWriter(ruta, true)){
             System.out.println("Ingrese rut: ");
@@ -174,92 +198,98 @@ public class CopiaAvanceCurricular {
             String nombreE = hh.readLine();
             System.out.println("Ingrese año de ingreso: ");
             String año = hh.readLine();
+            
             Estudiante estudiante = new Estudiante(nombreE, año, rut);
-            mapaEstudiante.put(rut, estudiante);
-            fw.append("\n"); // salto de línea para agregar los datos en una nueva línea
-            fw.append(rut).append(",");
-            fw.append(nombreE).append(",");
-            fw.append(año);
-        }catch (IOException e) {
-         System.out.println("Error");
-      }
-    }
-    
-    //Ingresa las asignaturas a un mapa
-    public void ingresarAsignatura(Asignatura asignatura){
-        mapaAsignatura.put(asignatura.getIdAsignatura(), asignatura);
-    }
-    
-    //Ingresa manualmente las asignaturas a un mapa y los guarda en un csv
-    public void ingresarAsignatura() throws IOException{
-        String ruta = "asignaturas.csv";
-        try (FileWriter fw = new FileWriter(ruta, true)){
-            System.out.println("Ingrese nombre asignatura: ");
-            String nombreA = hh.readLine();
-            System.out.println("Ingrese id: ");
-            String id = hh.readLine();
-            Asignatura asignatura = new Asignatura(nombreA, id);
-            mapaAsignatura.put(id, asignatura);
-            fw.append("\n"); // salto de línea para agregar los datos en una nueva línea
-            fw.append(nombreA).append(",");
-            fw.append(id);
-        }catch (IOException e) {
-         System.out.println("Error");
-      }
-    }
-    
-    //Asigna una asignatura aprobada a un estudiante mediante la clave de esta
-    public void agregarAsignaturaEstudiante() throws IOException{
-        System.out.println("Ingrese rut: ");
-        String rut = hh.readLine();
-        
-        Estudiante estudiante = mapaEstudiante.get(rut);
-        
-        if(estudiante != null){
             
-            System.out.println("Ingrese id de la Asignatura: ");
-            String id = hh.readLine();
-            
-            Asignatura asignatura = mapaAsignatura.get(id);
-            
-            if (asignatura != null){
+            if(miCarrera.agregarEstudiante(estudiante)){
+                fw.append("\n"); // salto de línea para agregar los datos en una nueva línea
+                fw.append(rut).append(",");
+                fw.append(nombreE).append(",");
+                fw.append(año);
                 
-                estudiante.agregarAsignaturas(asignatura.getNombreAsignatura(), asignatura.getIdAsignatura());
+                System.out.println("Estudiante ingresado al sistema :)");
             }
             else{
-                System.out.println("Asignatura no encontrada");
+                System.out.println("Error. No se ha ingresado el alumno al sistema.");
+            }
+           
+        }catch (IOException e) {
+         System.out.println("Error");
+      }
+    }
+    // referidas al estudiante en sí
+    //Asigna una asignatura aprobada a un estudiante mediante la clave de esta
+    public static void agregarAsignatura() throws IOException{
+        BufferedReader leer = new BufferedReader(new InputStreamReader(System.in));
+        System.out.println("Funcion de agregar una asignatura aprobada por el estudiante");
+             
+        System.out.print("Ingrese rut (x para salir): ");
+        String rut = leer.readLine();
+        if(rut.equals("x")){
+            System.out.println("Ha salido de la funcion\n");
+            return;
+        }
+        
+        System.out.println("¿Conoce las asignaturas que hay en el sistema?");
+        System.out.println("Ingrese: 0 (NO) || 1 (SI)  ");
+        String op = leer.readLine();
+        if(op.equals("0")){
+            if(miCarrera.agregarAsignatura(rut)){
+                System.out.println("Asignatura aprobada agregada con exito!\n");
+                return;
+            }   
+        }
+        
+        if(op.equals("1")){
+            System.out.println("Ingrese ID de la asignatura aprobada(x para salir): ");
+            String id = leer.readLine();
+            System.out.println("");
+            if(id.equals("x")){
+                System.out.println("Ha salido de la funcion\n");
+                return;
+            }
+            if(miCarrera.agregarAsignatura(rut, id)){
+                System.out.println("Asignatura aprobada agregada con exito!\n");
+                return;
             }
         }
-        else{
-            System.out.println("Estudiante no encontrado");
+        
+        System.out.println("No se ha agregado la asignatura aprobada al estudiante");
+        System.out.println("");       
+    }
+    //Muestra los datos del estudiante y las asignaturas aprobadas
+    public static void mostrarDatosEstudiante()throws IOException{
+        BufferedReader leer = new BufferedReader(new InputStreamReader(System.in));
+        System.out.println("Funcion mostrar info del estudiante\n");
+        System.out.print("Ingrese el rut (x para salir): ");
+        String rut = leer.readLine();
+        System.out.println("");
+        if(rut.equals("x")){
+            System.out.println("Ha salido de la funcion\n");
+            return;
         }
+        Estudiante ee = (Estudiante)miCarrera.buscarEstudiante(rut);
+        
+        if(ee == null){
+            System.out.println("Alumno no encontrado");
+            return;
+        }
+
+        System.out.println("Nombre: "+ee.getNombre());
+        System.out.println("Año ingreso: "+ee.getAnnoIngreso());
+        System.out.println("Rut: "+ee.getRut()+"\n");
+        ee.mostrarAprobadas();
+                    
+        System.out.println("");
     }
     
-    //Muestra los datos del estudiante y las asignaturas aprobadas
-    public void mostrarDatosEstudiante() throws IOException{
-        
-        System.out.println("Ingrese rut del Estudiante: ");
-        String rut = hh.readLine();
-        
-        Estudiante estudiante = mapaEstudiante.get(rut);
-        
-        if(estudiante != null){
-            System.out.println("Estudiante: "+ estudiante.getNombreEstudiante()
-                                +". Rut: "+estudiante.getRut());
-            System.out.println("Sus asignaturas son: ");
-            ArrayList <Asignatura> aa = estudiante.getAsignaturasAprobadas();
-                 
-            Asignatura asignatura;
-            int aux = aa.size();
-            for (int i = 0; i < aux; i++){
-                
-                asignatura = aa.get(i);
-                System.out.println("Asignatura: "+asignatura.getNombreAsignatura()+
-                                   "| Id: "+asignatura.getIdAsignatura());
-            }
-        }
-        else{
-            System.out.println("Estudiante no encontrado");
-        }
+    // son necesarias¿
+    public static void mostrarEstudiantes(){
+        miCarrera.listarEstudiantes();
+        System.out.println("");
+    }
+    public static void mostrarAsignaturas(){
+        miCarrera.mostrarRamos();
+        System.out.println("");
     }
 }
