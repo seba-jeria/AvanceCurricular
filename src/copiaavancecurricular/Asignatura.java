@@ -20,15 +20,18 @@ package copiaavancecurricular;
 public class Asignatura {
     private String nombre;
     private String id;
+    private int nota;
     
-    public Asignatura(String nombreAsignatura, String idAsignatura) {
+    public Asignatura(String nombreAsignatura, String idAsignatura, int nota) {
         this.nombre = nombreAsignatura;
         this.id = idAsignatura;
+        this.nota = nota;
     }
     
     public Asignatura(){
         this.nombre = null;
         this.id = null;
+        this.nota = 1;
     }
 
     public String getNombre() {
@@ -47,7 +50,16 @@ public class Asignatura {
         this.id = id;
     }
 
-    
+    public int getNota() {
+        return nota;
+    }
 
+    public void setNota(int nota) {
+        this.nota = nota;
+    }
+    
+    public void setNota(Double nota){
+        this.nota = (int) (nota*10);
+    }
 
 }

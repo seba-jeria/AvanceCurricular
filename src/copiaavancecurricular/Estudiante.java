@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package copiaavancecurricular;
+import java.io.*;
 
 /**
  *
@@ -24,7 +25,8 @@ public class Estudiante {
     private String nombre;
     private String rut;
     private String annoIngreso;
-    private ArrayList<Asignatura> asignaturasAprobadas = new ArrayList() ;
+    private ArrayList<Asignatura> asignaturasVigentes = new ArrayList();
+    private ArrayList<Asignatura> asignaturasAprobadas = new ArrayList();
     
     
 
@@ -33,6 +35,7 @@ public class Estudiante {
         this.annoIngreso = annoIngreso;
         this.rut = rut;
         asignaturasAprobadas = new ArrayList();
+        asignaturasVigentes = new ArrayList();
     }
     
     public Estudiante() {
@@ -40,6 +43,7 @@ public class Estudiante {
         this.annoIngreso = null;
         this.rut = null;
         asignaturasAprobadas = new ArrayList();
+        asignaturasVigentes = new ArrayList();
     }
 
     public String getNombre() {
@@ -76,16 +80,17 @@ public class Estudiante {
             aux = (Asignatura)asignaturasAprobadas.get(i);
             System.out.print(aux.getId()+": ");
             System.out.println(aux.getNombre());
+            System.out.println("Nota: "+aux.getNota());
         }
         System.out.println("");
     }
     
     //Se encargan de agregar una asignatura a la lista de asignaturasAprobadas
-    public boolean agregarAsignatura (String nombre, String id){
+    public boolean agregarAsignatura (String nombre, String id, int nota){
        
        /* retorna true si la asignatura se agregó, y false si no lo hizo*/
         if(buscarAsignatura(id) == null){
-            Asignatura aa = new Asignatura(nombre, id);
+            Asignatura aa = new Asignatura(nombre, id, nota);
             asignaturasAprobadas.add(aa);
             return true;
         }
@@ -114,5 +119,31 @@ public class Estudiante {
         return null;
     }
     
+    public boolean modificarNota(String id) throws IOException{
+        BufferedReader leer = new BufferedReader(new InputStreamReader(System.in));
+        Asignatura aa = buscarAsignatura(id);
+        if (aa != null){
+            System.out.println("Ingrese nota:");
+            Double nota = Double.parseDouble(leer.readLine());
+            aa.setNota(nota);
+            return true;
+        }
+        return false;
+    }
     
+    public boolean eliminarAsignatura(String id){
+        Asignatura aa = buscarAsignatura(id);
+        if (aa == null)
+            return false;
+ 
+        asignaturasAprobadas.remove(aa);
+        return true;
+    }
+    
+    public boolean mostarPorNotaMin(int nota, String id){
+        Asignatura aa = buscarAsignatura(id);
+        if (aa == null)
+            return false;
+        return nota <= aa.getNota();
+    }
 }

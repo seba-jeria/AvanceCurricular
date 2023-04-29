@@ -16,8 +16,7 @@ import java.io.FileWriter;
 public class CopiaAvanceCurricular {
     static Carrera miCarrera;
 
-
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, RutException {
         int opcion;
         boolean salir = true;
         miCarrera = new Carrera(); 
@@ -40,6 +39,8 @@ public class CopiaAvanceCurricular {
             System.out.println(" ( coleccion de asignaturas aprobadas )");
             System.out.println("5. Mostrar todos los estudiantes");
             System.out.println("6. Mostrar todas las asignaturas");
+            System.out.println("7. Eliminar asignatura vigente");
+            System.out.println("8. Modificar asignatura");
             System.out.println("0. Salir");
             System.out.print("Ingrese opcion: ");
             opcion = Integer.parseInt(leer.readLine());
@@ -80,6 +81,24 @@ public class CopiaAvanceCurricular {
                     System.out.println("_________________________________________________");
                     break;
                 }
+                case 7:{
+                    System.out.println("_________________________________________________");
+                    eliminarAsignatura();
+                    System.out.println("_________________________________________________");
+                    break;
+                }
+                case 8:{
+                    System.out.println("_________________________________________________");
+                    modificarNota();
+                    System.out.println("_________________________________________________");
+                    break; 
+                }
+                case 9:{
+                    System.out.println("_________________________________________________");
+                    mostarPorNotaMin();
+                    System.out.println("_________________________________________________");
+                    break;
+                }
                 case 0:{
                     System.out.println("\nPrograma finalizado...");
                     salir = false;
@@ -99,7 +118,7 @@ public class CopiaAvanceCurricular {
     }
     
     //funcion que lee los alumnos de un csv y los carga en un mapa
-    public static  void leerAlumno() {
+    public static  void leerAlumno() throws RutException{
         String ruta = "alumnos.csv";
         try (BufferedReader br = new BufferedReader(new FileReader(ruta))) {
             String linea;
@@ -170,7 +189,9 @@ public class CopiaAvanceCurricular {
             String nombreA = hh.readLine();
             System.out.println("Ingrese id: ");
             String id = hh.readLine();
-            Asignatura asignatura = new Asignatura(nombreA, id);
+            System.out.println("Ingrese nota: ");
+            int nota = Integer.parseInt(hh.readLine());
+            Asignatura asignatura = new Asignatura(nombreA, id, nota);
             if(miCarrera.annadirRamo(asignatura)){
                 fw.append("\n"); // salto de línea para agregar los datos en una nueva línea
                 fw.append(nombreA).append(",");
@@ -188,7 +209,7 @@ public class CopiaAvanceCurricular {
     
     
     //Ingresa manualmente los alumnos a un mapa y los guarda en un csv especifico
-    public static void ingresarEstudiante() throws IOException{
+    public static void ingresarEstudiante() throws IOException, RutException{
         BufferedReader hh = new BufferedReader(new InputStreamReader(System.in));
         String ruta = "alumnos.csv";
         try (FileWriter fw = new FileWriter(ruta, true)){
@@ -291,5 +312,31 @@ public class CopiaAvanceCurricular {
     public static void mostrarAsignaturas(){
         miCarrera.mostrarRamos();
         System.out.println("");
+    }
+    public static void modificarNota() throws IOException{
+        BufferedReader leer = new BufferedReader(new InputStreamReader(System.in));
+        System.out.println("Ingrese rut del Estudiante:");
+        String rut = leer.readLine();
+        System.out.println("Ingrese id de la Asignatura:");
+        String id = leer.readLine();
+        miCarrera.modificarNota(rut, id);
+    }
+    
+    public static void eliminarAsignatura() throws IOException{
+        BufferedReader leer = new BufferedReader(new InputStreamReader(System.in));
+        System.out.println("Ingrese rut del Estudiante:");
+        String rut = leer.readLine();
+        System.out.println("Ingrese id de la Asignatura:");
+        String id = leer.readLine();
+        miCarrera.eliminarAsignatura(rut, id);
+    }
+    
+    public static void mostarPorNotaMin() throws IOException{
+        BufferedReader leer = new BufferedReader(new InputStreamReader(System.in));
+        System.out.println("Ingrese id de la Asignatura:");
+        String id = leer.readLine();
+        System.out.println("Ingrese nota minima:");
+        int nota = Integer.parseInt(leer.readLine());
+        miCarrera.mostarPorNotaMin(nota, id);
     }
 }
