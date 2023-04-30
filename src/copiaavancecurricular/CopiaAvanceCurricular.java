@@ -22,9 +22,9 @@ public class CopiaAvanceCurricular {
         miCarrera = new Carrera(); 
         BufferedReader leer = new BufferedReader(new InputStreamReader(System.in));
         
-        System.out.println("**************************************************");
+        /*System.out.println("**************************************************");
         System.out.println("BIENVENIDO");
-        System.out.println("**************************************************");
+        System.out.println("**************************************************");*/
         
         //llamado de funciones para leer los csvs
         leerAlumno();
@@ -40,10 +40,12 @@ public class CopiaAvanceCurricular {
             System.out.println("5. Mostrar todos los estudiantes");
             System.out.println("6. Mostrar todas las asignaturas");
             System.out.println("7. Eliminar asignatura vigente");
-            System.out.println("8. Modificar asignatura");
+            System.out.println("8. Modificar nota de una asignatura");
+            System.out.println("9. Eliminar asignatura vigente");
             System.out.println("0. Salir");
             System.out.print("Ingrese opcion: ");
             opcion = Integer.parseInt(leer.readLine());
+            
             switch (opcion) {
                 case 1:{
                     System.out.println("_________________________________________________");
@@ -122,7 +124,6 @@ public class CopiaAvanceCurricular {
         String ruta = "alumnos.csv";
         try (BufferedReader br = new BufferedReader(new FileReader(ruta))) {
             String linea;
-        
             while ((linea = br.readLine()) != null) {
                 String[] datos = linea.split(",");
                 Estudiante estudiante = new Estudiante();

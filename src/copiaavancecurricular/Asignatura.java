@@ -59,7 +59,16 @@ public class Asignatura {
     }
     
     public void setNota(Double nota){
-        this.nota = (int) (nota*10);
-    }
+        double redondeado = Math.round(nota * 10) / 10.0;
 
+        if (redondeado < 10) {
+            redondeado = redondeado * 10;
+            redondeado = (int) redondeado;
+        } else {
+            redondeado = (int) redondeado;
+        }
+
+        int numeroEntero = (int) redondeado;
+        this.nota = numeroEntero;
+    }
 }

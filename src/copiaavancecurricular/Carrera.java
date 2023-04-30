@@ -130,7 +130,7 @@ public class Carrera {
             return false;
         }
         
-        return ee.agregarAsignatura(aa);
+        return ee.agregarAsignatura(aa.getNombre(), aa.getId(), aa.getNota());
     }
     public boolean agregarAsignatura(String rut)throws IOException{
         Estudiante ee = buscarEstudiante(rut);
@@ -147,7 +147,7 @@ public class Carrera {
             return false;
         }
         Asignatura aa = buscarAsignatura(id);
-        return ee.agregarAsignatura(aa);
+        return ee.agregarAsignatura(aa.getNombre(), aa.getId(), aa.getNota());
     }
     
     public boolean modificarNota(String rut, String id) throws IOException{
