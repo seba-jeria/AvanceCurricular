@@ -3,7 +3,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package copiaavancecurricular;
-
 /**
  *
  * @author seba
@@ -26,6 +25,11 @@ public class Asignatura {
         this.nombre = nombreAsignatura;
         this.id = idAsignatura;
         this.nota = nota;
+    }
+    public Asignatura(String nombreAsignatura, String idAsignatura) {
+        this.nombre = nombreAsignatura;
+        this.id = idAsignatura;
+        this.nota = 1;
     }
     
     public Asignatura(){
@@ -52,10 +56,6 @@ public class Asignatura {
 
     public int getNota() {
         return nota;
-    }
-
-    public void setNota(int nota) {
-        this.nota = nota;
     }
     
     public void setNota(Double nota){

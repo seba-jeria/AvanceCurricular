@@ -42,6 +42,10 @@ public class CopiaAvanceCurricular {
             System.out.println("7. Eliminar asignatura vigente");
             System.out.println("8. Modificar nota de una asignatura");
             System.out.println("9. Eliminar asignatura vigente");
+            System.out.println("8. Modificar asignatura");
+            System.out.println("9. Mostrar alumnos con nota minima en una asignatura aprobada");
+            System.out.println("10. Mostrar alumnos de una generacion (anno ingreso)");
+            System.out.println("11. Ingresar asignatura vigente");
             System.out.println("0. Salir");
             System.out.print("Ingrese opcion: ");
             opcion = Integer.parseInt(leer.readLine());
@@ -97,7 +101,14 @@ public class CopiaAvanceCurricular {
                 }
                 case 9:{
                     System.out.println("_________________________________________________");
-                    mostarPorNotaMin();
+                    //mostarPorNotaMin();
+                    mostrarPorAnno();
+                    System.out.println("_________________________________________________");
+                    break;
+                }
+                case 11:{
+                    System.out.println("_________________________________________________");
+                    agregarAsignaturaVigente();
                     System.out.println("_________________________________________________");
                     break;
                 }
@@ -106,6 +117,7 @@ public class CopiaAvanceCurricular {
                     salir = false;
                     break;
                 }
+                
                 default:{
                     
                     System.out.println("Instruccion incorrecta\n");
@@ -126,7 +138,7 @@ public class CopiaAvanceCurricular {
             String linea;
             while ((linea = br.readLine()) != null) {
                 String[] datos = linea.split(",");
-                Estudiante estudiante = new Estudiante();
+                EstudianteVigente estudiante = new EstudianteVigente();
                 int i = 0; 
 
                 for (String dato : datos) {
@@ -220,27 +232,85 @@ public class CopiaAvanceCurricular {
             String nombreE = hh.readLine();
             System.out.println("Ingrese año de ingreso: ");
             String año = hh.readLine();
-            
-            Estudiante estudiante = new Estudiante(nombreE, año, rut);
-            
-            if(miCarrera.agregarEstudiante(estudiante)){
-                fw.append("\n"); // salto de línea para agregar los datos en una nueva línea
-                fw.append(rut).append(",");
-                fw.append(nombreE).append(",");
-                fw.append(año);
+            System.out.println("Ingrese si es estudiante vigente o titulado ");
+            System.out.println("0 (vigente) || 1 (titulado)");
+            String op = hh.readLine();
+            if(op.equals("0")){
+                EstudianteVigente estudiante = new EstudianteVigente(nombreE, año, rut);
+                if(miCarrera.agregarEstudiante(estudiante)){
+                    fw.append("\n"); // salto de línea para agregar los datos en una nueva línea
+                    fw.append(rut).append(",");
+                    fw.append(nombreE).append(",");
+                    fw.append(año);
                 
-                System.out.println("Estudiante ingresado al sistema :)");
+                    System.out.println("Estudiante ingresado al sistema :)");
+                }
+                else{
+                   System.out.println("Error. No se ha ingresado el alumno al sistema.");
+                }    
             }
             else{
-                System.out.println("Error. No se ha ingresado el alumno al sistema.");
+                System.out.println("Ingrese año de titulacion: ");
+                String att = hh.readLine();
+                EstudianteTitulado estudiante = new EstudianteTitulado(att, nombreE, año, rut);
+                if(miCarrera.agregarEstudiante(estudiante)){
+                    fw.append("\n"); // salto de línea para agregar los datos en una nueva línea
+                    fw.append(rut).append(",");
+                    fw.append(nombreE).append(",");
+                    fw.append(año);
+                    miCarrera.esTitulado(estudiante);
+                    System.out.println("Estudiante ingresado al sistema :)");
+                }
+                else{
+                   System.out.println("Error. No se ha ingresado el alumno al sistema.");
+                }    
             }
-           
-        }catch (IOException e) {
-         System.out.println("Error");
-      }
+        
+        }
+        catch (IOException e) {
+            System.out.println("Error");
+        }
     }
     // referidas al estudiante en sí
     //Asigna una asignatura aprobada a un estudiante mediante la clave de esta
+    public static void agregarAsignaturaVigente() throws IOException{
+        BufferedReader leer = new BufferedReader(new InputStreamReader(System.in));
+        System.out.println("Funcion de agregar una asignatura vigente");
+             
+        System.out.print("Ingrese rut (x para salir): ");
+        String rut = leer.readLine();
+        if(rut.equals("x")){
+            System.out.println("Ha salido de la funcion\n");
+            return;
+        }
+        
+        System.out.println("¿Conoce las asignaturas que hay en el sistema?");
+        System.out.println("Ingrese: 0 (NO) || 1 (SI)  ");
+        String op = leer.readLine();
+        if(op.equals("0")){
+            if(miCarrera.agregarAsignaturaVigente(rut)){
+                System.out.println("Asignatura vigente agregada con exito!\n");
+                return;
+            }   
+        }
+        
+        if(op.equals("1")){
+            System.out.println("Ingrese ID de la asignatura vigente(x para salir): ");
+            String id = leer.readLine();
+            System.out.println("");
+            if(id.equals("x")){
+                System.out.println("Ha salido de la funcion\n");
+                return;
+            }
+            if(miCarrera.agregarAsignaturaVigente(rut, id)){
+                System.out.println("Asignatura vigente agregada con exito!\n");
+                return;
+            }
+        }
+        
+        System.out.println("No se ha agregado la asignatura aprobada al estudiante");
+        System.out.println("");       
+    }
     public static void agregarAsignatura() throws IOException{
         BufferedReader leer = new BufferedReader(new InputStreamReader(System.in));
         System.out.println("Funcion de agregar una asignatura aprobada por el estudiante");
@@ -320,7 +390,9 @@ public class CopiaAvanceCurricular {
         String rut = leer.readLine();
         System.out.println("Ingrese id de la Asignatura:");
         String id = leer.readLine();
-        miCarrera.modificarNota(rut, id);
+        if(miCarrera.modificarNota(rut, id)){
+            System.out.println("Modificada con exito");
+        }
     }
     
     public static void eliminarAsignatura() throws IOException{
@@ -330,6 +402,12 @@ public class CopiaAvanceCurricular {
         System.out.println("Ingrese id de la Asignatura:");
         String id = leer.readLine();
         miCarrera.eliminarAsignatura(rut, id);
+    }
+    public static void mostrarPorAnno() throws IOException{
+        BufferedReader leer = new BufferedReader(new InputStreamReader(System.in));
+        System.out.println("Ingrese anno de ingreso: ");
+        String an = leer.readLine();
+        miCarrera.mostrarPorAnno(an);
     }
     
     public static void mostarPorNotaMin() throws IOException{

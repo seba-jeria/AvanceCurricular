@@ -4,16 +4,6 @@
  */
 package copiaavancecurricular;
 import java.io.*;
-
-/**
- *
- * @author seba
- */
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-
 import java.util.*;
 
 
@@ -25,7 +15,6 @@ public class Estudiante {
     private String nombre;
     private String rut;
     private String annoIngreso;
-    private ArrayList<Asignatura> asignaturasVigentes = new ArrayList();
     private ArrayList<Asignatura> asignaturasAprobadas = new ArrayList();
     
     
@@ -35,15 +24,12 @@ public class Estudiante {
         this.annoIngreso = annoIngreso;
         this.rut = rut;
         asignaturasAprobadas = new ArrayList();
-        asignaturasVigentes = new ArrayList();
     }
-    
     public Estudiante() {
         this.nombre = null;
         this.annoIngreso = null;
         this.rut = null;
         asignaturasAprobadas = new ArrayList();
-        asignaturasVigentes = new ArrayList();
     }
 
     public String getNombre() {
@@ -86,7 +72,7 @@ public class Estudiante {
     }
     
     //Se encargan de agregar una asignatura a la lista de asignaturasAprobadas
-    public boolean agregarAsignatura (String nombre, String id, int nota){
+    public boolean agregarAsignatura(String nombre, String id, int nota){
        
        /* retorna true si la asignatura se agregó, y false si no lo hizo*/
         if(buscarAsignatura(id) == null){
@@ -96,16 +82,7 @@ public class Estudiante {
         }
         return(false);
    }
-    public boolean agregarAsignatura (Asignatura aa){
-        /* retorna true si la asignatura se agregó, y false si no lo hizo*/
-        if(buscarAsignatura(aa.getId()) == null){
-            asignaturasAprobadas.add(aa);
-            return true; 
-        }
-        
-        return(false);
-    }     
-   
+
     
     public Asignatura buscarAsignatura(String id){
         int j = asignaturasAprobadas.size();
@@ -124,26 +101,31 @@ public class Estudiante {
         Asignatura aa = buscarAsignatura(id);
         if (aa != null){
             System.out.println("Ingrese nota:");
-            Double nota = Double.parseDouble(leer.readLine());
+            Double nota = Double.valueOf(leer.readLine());
+            
             aa.setNota(nota);
             return true;
         }
         return false;
     }
     
-    public boolean eliminarAsignatura(String id){
-        Asignatura aa = buscarAsignatura(id);
-        if (aa == null)
-            return false;
- 
-        asignaturasAprobadas.remove(aa);
-        return true;
+
+    public boolean mostrarPorAnno(String an){
+        return this.annoIngreso.equals(an);
     }
-    
     public boolean mostarPorNotaMin(int nota, String id){
         Asignatura aa = buscarAsignatura(id);
         if (aa == null)
             return false;
-        return nota <= aa.getNota();
+        if(aa.getNota() >= nota){
+            return true;
+        }
+        return false;
+    }
+    
+    public void identificarse(){
+        System.out.println("Estudiante titulado");
+        System.out.println(getNombre()+" "+getRut());
+        System.out.println("");
     }
 }

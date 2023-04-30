@@ -13,8 +13,8 @@ public class Carrera {
     private String nombre;
     private HashMap <String, Estudiante> mapAlumnosTotal = new HashMap();
     private HashMap <String, Asignatura> mapRamosTotal = new HashMap();
-    private ArrayList <Estudiante> listAlumnosTotal = new ArrayList();
-    private ArrayList <Asignatura> listAsignaturasTotal = new ArrayList();
+    private ArrayList  listAlumnosTotal = new ArrayList();
+    private ArrayList  listAsignaturasTotal = new ArrayList();
 
     public Carrera(){
         nombre = null;
@@ -69,7 +69,7 @@ public class Carrera {
     }
     
     // ESTUDIANTES
-    public boolean agregarEstudiante (Estudiante ee) throws RutException{
+    public boolean agregarEstudiante (EstudianteVigente ee) throws RutException{
         /* retorna true si la asignatura se agregó, y false si no lo hizo*/
         String rut = ee.getRut();
         String lastChar = Character.toString(rut.charAt(rut.length() - 1));
@@ -81,7 +81,7 @@ public class Carrera {
             }
         }
         try {
-        int numAux = NumberFormat.getInstance().parse(lastChar).intValue();
+            int numAux = NumberFormat.getInstance().parse(lastChar).intValue();
             if (numAux >= 0 && numAux <= 9) {
                 if (buscarEstudiante(ee.getRut()) == null) {
                     listAlumnosTotal.add(ee);
@@ -97,7 +97,35 @@ public class Carrera {
         }
         return false;
     }
-    public Estudiante buscarEstudiante(String rut){
+    public boolean agregarEstudiante (EstudianteTitulado ee) throws RutException{
+        String rut = ee.getRut();
+        String lastChar = Character.toString(rut.charAt(rut.length() - 1));
+        if ((lastChar.equals("k")) || (lastChar.equals("K"))){ 
+            if(buscarEstudiante(ee.getRut()) == null){
+                listAlumnosTotal.add(ee);
+                mapAlumnosTotal.put(ee.getRut(), ee);
+                return true;
+            }
+        }
+        try {
+            int numAux = NumberFormat.getInstance().parse(lastChar).intValue();
+            if (numAux >= 0 && numAux <= 9) {
+                if (buscarEstudiante(ee.getRut()) == null) {
+                    listAlumnosTotal.add(ee);
+                    mapAlumnosTotal.put(ee.getRut(), ee);
+                    return true;
+                }
+            } 
+            else {
+                throw new RutException();
+            }
+        } catch (ParseException e) {
+            throw new RutException();
+        }
+        return false;
+    }
+    
+    public Object buscarEstudiante(String rut){
         /* retorna true si la asignatura NO existe, y false si existe*/
         if(mapAlumnosTotal.containsKey(rut)){
             return (Estudiante) mapAlumnosTotal.get(rut);
@@ -111,17 +139,21 @@ public class Carrera {
             System.out.println("");
             return;
         }
-        Estudiante aux;
         System.out.println("Alumnos de la carrera: ");
         for (int i = 0; i<j; i++) {
-            aux = (Estudiante)listAlumnosTotal.get(i);
-            System.out.print(aux.getRut()+": ");
-            System.out.println(aux.getNombre());
+            if((listAlumnosTotal.get(i)) instanceof EstudianteVigente){
+                EstudianteVigente aux = (EstudianteVigente)listAlumnosTotal.get(i);
+                aux.identificarse();
+            }
+            else{
+                EstudianteTitulado aux = (EstudianteTitulado)listAlumnosTotal.get(i);
+                aux.identificarse();
+            }
         }
         System.out.println("");
     }
-    public boolean agregarAsignatura(String rut, String id){
-        Estudiante ee = buscarEstudiante(rut);
+    public boolean agregarAsignaturaVigente(String rut, String id){
+        EstudianteVigente ee = (EstudianteVigente)buscarEstudiante(rut);
         Asignatura aa = buscarAsignatura(id);
         if(ee == null){
             return false;
@@ -130,10 +162,44 @@ public class Carrera {
             return false;
         }
         
-        return ee.agregarAsignatura(aa.getNombre(), aa.getId(), aa.getNota());
+
+        return ee.agregarAsignaturaVigente(aa.getNombre(), id);
+    }
+    public boolean agregarAsignaturaVigente(String rut)throws IOException{
+        EstudianteVigente ee = (EstudianteVigente)buscarEstudiante(rut);
+        if(ee == null){
+            return false;
+        }
+        BufferedReader leer = new BufferedReader(new InputStreamReader(System.in));
+        mostrarRamos();
+        
+        System.out.println("Ingrese ID de la asignatura aprobada: ");
+        String id = leer.readLine();
+        
+        if(buscarAsignatura(id) == null){
+            return false;
+        }
+        Asignatura aa = buscarAsignatura(id);
+
+        return ee.agregarAsignaturaVigente(aa.getNombre(), aa.getId());
+    }
+    public boolean agregarAsignatura(String rut, String id){
+        EstudianteVigente ee = (EstudianteVigente)buscarEstudiante(rut);
+        Asignatura aa = buscarAsignatura(id);
+        if(ee == null){
+            return false;
+        }
+        if(aa == null){
+            return false;
+        }
+        if(ee.agregarAsignaturaAprobada(id)){
+            return ee.agregarAsignatura(aa.getNombre(), id, aa.getNota());
+        }
+        return false;
+        
     }
     public boolean agregarAsignatura(String rut)throws IOException{
-        Estudiante ee = buscarEstudiante(rut);
+        EstudianteVigente ee = (EstudianteVigente)buscarEstudiante(rut);
         if(ee == null){
             return false;
         }
@@ -151,7 +217,7 @@ public class Carrera {
     }
     
     public boolean modificarNota(String rut, String id) throws IOException{
-        Estudiante ee = buscarEstudiante(rut);
+        EstudianteVigente ee = (EstudianteVigente)buscarEstudiante(rut);
         if (ee == null)
             return false;
         
@@ -160,13 +226,30 @@ public class Carrera {
     }
     
     public boolean eliminarAsignatura(String rut, String id){
-        Estudiante ee = buscarEstudiante(rut);
+        EstudianteVigente ee = (EstudianteVigente)buscarEstudiante(rut);
         if (ee == null)
             return false;
         
         return ee.eliminarAsignatura(id);
     }
     
+    public void mostrarPorAnno(String an){
+        int j = listAlumnosTotal.size();
+        if(j == 0){
+            System.out.println("Carrera sin alumnos :c");
+            System.out.println("");
+            return;
+        }
+        Estudiante aux;
+        System.out.println("Alumnos de la generacion "+an);
+        for (int i = 0; i<j; i++) {
+            aux = (Estudiante)listAlumnosTotal.get(i);
+            if (aux.mostrarPorAnno(an)){
+                System.out.println(aux.getNombre());
+            }
+        }
+        System.out.println("");
+    }
     public void mostarPorNotaMin(int nota, String id){
         int j = listAlumnosTotal.size();
         if(j == 0){
@@ -183,5 +266,15 @@ public class Carrera {
             }
         }
         System.out.println("");
+    }
+    public void esTitulado(EstudianteTitulado ee){
+        int j = listAsignaturasTotal.size();
+       
+        Asignatura aux;
+        for (int i = 0; i<j; i++) {
+            aux = (Asignatura)listAsignaturasTotal.get(i);
+            ee.agregarAsignatura(aux.getNombre(), aux.getId(), aux.getNota());
+        }
+        System.out.println("Estudiante titulado, asignaturas completadas");
     }
 }
