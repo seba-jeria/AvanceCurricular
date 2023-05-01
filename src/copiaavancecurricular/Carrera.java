@@ -216,12 +216,24 @@ public class Carrera {
         return ee.agregarAsignatura(aa.getNombre(), aa.getId(), aa.getNota());
     }
     
-    public boolean modificarNota(String rut, String id) throws IOException{
+    public boolean modificarNota(String rut) throws IOException{
+        BufferedReader leer = new BufferedReader(new InputStreamReader(System.in));
         EstudianteVigente ee = (EstudianteVigente)buscarEstudiante(rut);
         if (ee == null)
             return false;
+        System.out.println("Conoce sus asignaturas?");
+        System.out.println("Ingrese: 0 (no) || 1 (si)");
+        String op = leer.readLine();
+        if(op.equals("1")){
+            System.out.println("Ingrese id de la Asignatura:");
+            String id = leer.readLine();
+            return ee.modificarNota(id);
+        }
+        else{
+            
+            return ee.modificarNota();
+        }
         
-        return ee.modificarNota(id);
         
     }
     

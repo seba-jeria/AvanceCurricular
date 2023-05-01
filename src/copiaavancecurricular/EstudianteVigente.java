@@ -33,6 +33,14 @@ public class EstudianteVigente extends Estudiante{
         System.out.println("Cantidad de asignaturas actuales: "+ getCantAsignaturas());
         System.out.println("");
     }
+    public void mostrarVigentes(){
+        int j = asignaturasVigentes.size();
+        Asignatura aux;
+        for(int i = 0; i<j; i++){
+            aux = (Asignatura)asignaturasVigentes.get(i);
+            System.out.println(aux.getNombre());
+        }
+    }
     
     public boolean eliminarAsignatura(String id){
         Asignatura aa = buscarAsignaturaVigente(id);
@@ -40,6 +48,7 @@ public class EstudianteVigente extends Estudiante{
             return false;
  
         asignaturasVigentes.remove(aa);
+        cantAsignaturas--;
         return true;
     }
     public Asignatura buscarAsignaturaVigente(String id){
@@ -56,6 +65,7 @@ public class EstudianteVigente extends Estudiante{
     public boolean agregarAsignaturaAprobada(String id){
         if(buscarAsignaturaVigente(id) != null){
             if(eliminarAsignatura(id)){
+                
                 return true;
             }
             return(false);
@@ -70,7 +80,8 @@ public class EstudianteVigente extends Estudiante{
             if(aa == null){
                 Asignatura asig = new Asignatura(nombre, id);
                 asignaturasVigentes.add(asig);
-                 return true;
+                cantAsignaturas++;
+                return true;
             }
         }
         return(false);

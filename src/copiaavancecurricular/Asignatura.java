@@ -29,7 +29,7 @@ public class Asignatura {
     public Asignatura(String nombreAsignatura, String idAsignatura) {
         this.nombre = nombreAsignatura;
         this.id = idAsignatura;
-        this.nota = 1;
+        this.nota = 40;
     }
     
     public Asignatura(){

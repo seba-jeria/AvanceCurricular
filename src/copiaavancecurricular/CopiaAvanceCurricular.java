@@ -46,6 +46,7 @@ public class CopiaAvanceCurricular {
             System.out.println("9. Mostrar alumnos con nota minima en una asignatura aprobada");
             System.out.println("10. Mostrar alumnos de una generacion (anno ingreso)");
             System.out.println("11. Ingresar asignatura vigente");
+            System.out.println("12. Mostrar Vigentes");
             System.out.println("0. Salir");
             System.out.print("Ingrese opcion: ");
             opcion = Integer.parseInt(leer.readLine());
@@ -112,6 +113,13 @@ public class CopiaAvanceCurricular {
                     System.out.println("_________________________________________________");
                     break;
                 }
+                case 12:{
+                    System.out.println("_________________________________________________");
+                    mostrarVigentes();
+                    System.out.println("_________________________________________________");
+                    break;
+                }
+                    
                 case 0:{
                     System.out.println("\nPrograma finalizado...");
                     salir = false;
@@ -371,10 +379,26 @@ public class CopiaAvanceCurricular {
         System.out.println("Año ingreso: "+ee.getAnnoIngreso());
         System.out.println("Rut: "+ee.getRut()+"\n");
         ee.mostrarAprobadas();
+        
                     
         System.out.println("");
     }
-    
+
+    public static void mostrarVigentes() throws IOException{
+        BufferedReader leer = new BufferedReader(new InputStreamReader(System.in));
+        System.out.println("Funcion mostrar info del estudiante\n");
+        System.out.print("Ingrese el rut (x para salir): ");
+        String rut = leer.readLine();
+        System.out.println("");
+        if(rut.equals("x")){
+            System.out.println("Ha salido de la funcion\n");
+            return;
+        }
+        EstudianteVigente ee = (EstudianteVigente)miCarrera.buscarEstudiante(rut);
+        ee.mostrarVigentes();
+        System.out.println("");
+    }
+   
     // son necesarias¿
     public static void mostrarEstudiantes(){
         miCarrera.listarEstudiantes();
@@ -388,9 +412,8 @@ public class CopiaAvanceCurricular {
         BufferedReader leer = new BufferedReader(new InputStreamReader(System.in));
         System.out.println("Ingrese rut del Estudiante:");
         String rut = leer.readLine();
-        System.out.println("Ingrese id de la Asignatura:");
-        String id = leer.readLine();
-        if(miCarrera.modificarNota(rut, id)){
+        
+        if(miCarrera.modificarNota(rut)){
             System.out.println("Modificada con exito");
         }
     }

@@ -108,7 +108,23 @@ public class Estudiante {
         }
         return false;
     }
-    
+    public boolean modificarNota() throws IOException{
+        BufferedReader leer = new BufferedReader(new InputStreamReader(System.in));
+        mostrarAprobadas();
+        System.out.println("Ingrese id de la Asignatura:");
+        String id = leer.readLine();
+        
+        Asignatura aa = buscarAsignatura(id);
+        
+        if (aa != null){
+            System.out.println("Ingrese nota:");
+            Double nota = Double.valueOf(leer.readLine());
+            
+            aa.setNota(nota);
+            return true;
+        }
+        return false;
+    }
 
     public boolean mostrarPorAnno(String an){
         return this.annoIngreso.equals(an);
