@@ -4,6 +4,7 @@
  */
 package copiaavancecurricular;
 import java.io.*;
+import java.text.*;
 import java.util.*;
 
 
@@ -96,19 +97,28 @@ public class Estudiante {
         return null;
     }
     
-    public boolean modificarNota(String id) throws IOException{
+    public boolean modificarNota(String id) throws IOException, NotaException{
         BufferedReader leer = new BufferedReader(new InputStreamReader(System.in));
         Asignatura aa = buscarAsignatura(id);
         if (aa != null){
             System.out.println("Ingrese nota:");
             Double nota = Double.valueOf(leer.readLine());
-            
-            aa.setNota(nota);
-            return true;
+
+            if((nota>=1.0) && (nota<=7.0)){
+                aa.setNota(nota);
+                 return true;
+            }
+            else{
+               if ((nota>=10) && (nota<=70)){
+                    aa.setNota(nota);
+                    return true;
+               }
+               throw new NotaException();
+            }
         }
         return false;
     }
-    public boolean modificarNota() throws IOException{
+    public boolean modificarNota() throws IOException, NotaException{
         BufferedReader leer = new BufferedReader(new InputStreamReader(System.in));
         mostrarAprobadas();
         System.out.println("Ingrese id de la Asignatura:");
@@ -119,9 +129,18 @@ public class Estudiante {
         if (aa != null){
             System.out.println("Ingrese nota:");
             Double nota = Double.valueOf(leer.readLine());
-            
-            aa.setNota(nota);
-            return true;
+
+            if((nota>=1.0) && (nota<=7.0)){
+                aa.setNota(nota);
+                 return true;
+            }
+            else{
+               if ((nota>=10) && (nota<=70)){
+                    aa.setNota(nota);
+                    return true;
+               }
+               throw new NotaException();
+            }
         }
         return false;
     }

@@ -16,7 +16,7 @@ import java.io.FileWriter;
 public class CopiaAvanceCurricular {
     static Carrera miCarrera;
 
-    public static void main(String[] args) throws IOException, RutException {
+    public static void main(String[] args) throws IOException, RutException, NotaException {
         int opcion;
         boolean salir = true;
         miCarrera = new Carrera(); 
@@ -35,18 +35,16 @@ public class CopiaAvanceCurricular {
             System.out.println("1. Añadir estudiante manualmente al sistema");
             System.out.println("2. Añadir una asignatura manualmente al sistema");
             System.out.println("3. Ingresar asignatura aprobada a un estudiante");
-            System.out.print("4. Mostrar informacion del estudiante");
+            System.out.println("4. Ingresar asignatura vigente a un estudiante");
+            System.out.println("5. Modificar nota de una asignatura aprobada");
+            System.out.println("6. Eliminar asignatura vigente");
+            System.out.println("7. Mostrar todos los estudiantes");
+            System.out.println("8. Mostrar todas las asignaturas");
+            System.out.println("9. Mostrar todos las asignaturas vigentes de un estudiante");
+            System.out.print("10. Mostrar informacion del estudiante");
             System.out.println(" ( coleccion de asignaturas aprobadas )");
-            System.out.println("5. Mostrar todos los estudiantes");
-            System.out.println("6. Mostrar todas las asignaturas");
-            System.out.println("7. Eliminar asignatura vigente");
-            System.out.println("8. Modificar nota de una asignatura");
-            System.out.println("9. Eliminar asignatura vigente");
-            System.out.println("8. Modificar asignatura");
-            System.out.println("9. Mostrar alumnos con nota minima en una asignatura aprobada");
-            System.out.println("10. Mostrar alumnos de una generacion (anno ingreso)");
-            System.out.println("11. Ingresar asignatura vigente");
-            System.out.println("12. Mostrar Vigentes");
+            System.out.println("11. Mostrar alumnos por nota mayor o igual");
+            System.out.println("12. Mostrar alumnos de una generacion (anno ingreso)");
             System.out.println("0. Salir");
             System.out.print("Ingrese opcion: ");
             opcion = Integer.parseInt(leer.readLine());
@@ -72,50 +70,64 @@ public class CopiaAvanceCurricular {
                 } 
                 case 4:{
                     System.out.println("_________________________________________________");
-                    mostrarDatosEstudiante();
+                    agregarAsignaturaVigente();
+                    //mostrarDatosEstudiante();
                     System.out.println("_________________________________________________");
                     break;
                 }
                 case 5:{
                     System.out.println("_________________________________________________");
-                    mostrarEstudiantes();
+                    modificarNota();
+                    //mostrarEstudiantes();
                     System.out.println("_________________________________________________");
                     break;
                 }
                 case 6:{
                     System.out.println("_________________________________________________");
-                    mostrarAsignaturas();
+                    eliminarAsignatura();
+                    //mostrarAsignaturas();
                     System.out.println("_________________________________________________");
                     break;
                 }
                 case 7:{
                     System.out.println("_________________________________________________");
-                    eliminarAsignatura();
+                    mostrarEstudiantes();
+                    //eliminarAsignatura();
                     System.out.println("_________________________________________________");
                     break;
                 }
                 case 8:{
                     System.out.println("_________________________________________________");
-                    modificarNota();
+                    mostrarAsignaturas();
+                    //modificarNota();
                     System.out.println("_________________________________________________");
                     break; 
                 }
                 case 9:{
                     System.out.println("_________________________________________________");
+                    mostrarVigentes();
                     //mostarPorNotaMin();
-                    mostrarPorAnno();
+                    System.out.println("_________________________________________________");
+                    break;
+                }
+                case 10:{
+                    System.out.println("_________________________________________________");
+                    mostrarDatosEstudiante();
+                    //mostrarPorAnno();
                     System.out.println("_________________________________________________");
                     break;
                 }
                 case 11:{
                     System.out.println("_________________________________________________");
-                    agregarAsignaturaVigente();
+                    mostarPorNotaMin();
+                    //agregarAsignaturaVigente();
                     System.out.println("_________________________________________________");
                     break;
                 }
                 case 12:{
                     System.out.println("_________________________________________________");
-                    mostrarVigentes();
+                    mostrarPorAnno();
+                    //mostrarVigentes();
                     System.out.println("_________________________________________________");
                     break;
                 }
@@ -210,8 +222,7 @@ public class CopiaAvanceCurricular {
             String nombreA = hh.readLine();
             System.out.println("Ingrese id: ");
             String id = hh.readLine();
-            System.out.println("Ingrese nota: ");
-            int nota = Integer.parseInt(hh.readLine());
+            int nota = 1;
             Asignatura asignatura = new Asignatura(nombreA, id, nota);
             if(miCarrera.annadirRamo(asignatura)){
                 fw.append("\n"); // salto de línea para agregar los datos en una nueva línea
@@ -408,7 +419,7 @@ public class CopiaAvanceCurricular {
         miCarrera.mostrarRamos();
         System.out.println("");
     }
-    public static void modificarNota() throws IOException{
+    public static void modificarNota() throws IOException, NotaException{
         BufferedReader leer = new BufferedReader(new InputStreamReader(System.in));
         System.out.println("Ingrese rut del Estudiante:");
         String rut = leer.readLine();

@@ -216,7 +216,7 @@ public class Carrera {
         return ee.agregarAsignatura(aa.getNombre(), aa.getId(), aa.getNota());
     }
     
-    public boolean modificarNota(String rut) throws IOException{
+    public boolean modificarNota(String rut) throws IOException, NotaException{
         BufferedReader leer = new BufferedReader(new InputStreamReader(System.in));
         EstudianteVigente ee = (EstudianteVigente)buscarEstudiante(rut);
         if (ee == null)
