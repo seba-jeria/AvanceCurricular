@@ -10,12 +10,14 @@ import java.text.*;
 
 
 public class Carrera {
+    //se inicializan las variables
     private String nombre;
     private HashMap <String, Estudiante> mapAlumnosTotal = new HashMap();
     private HashMap <String, Asignatura> mapRamosTotal = new HashMap();
     private ArrayList  listAlumnosTotal = new ArrayList();
     private ArrayList  listAsignaturasTotal = new ArrayList();
-
+    
+    //se crea un constructor sin parametros
     public Carrera(){
         nombre = null;
         mapAlumnosTotal = new HashMap();
@@ -23,6 +25,8 @@ public class Carrera {
         listAlumnosTotal = new ArrayList();
         listAsignaturasTotal = new ArrayList();
     }
+    
+    //se crea un constructor que recibe el nombre de la carrera
     public Carrera(String nombre) {
         this.nombre = nombre;
         mapAlumnosTotal = new HashMap();
@@ -45,12 +49,14 @@ public class Carrera {
         }
         return(false);
     }
+    //busca la asignatura en el mapa
     public Asignatura buscarAsignatura(String id){
         if(mapRamosTotal.containsKey(id)){
             return (Asignatura) mapRamosTotal.get(id);
         }
         return null;
     }
+    //muestra las asignaturas de una lista
     public void mostrarRamos(){
         int j = listAsignaturasTotal.size();
         if(j == 0){
@@ -97,6 +103,7 @@ public class Carrera {
         }
         return false;
     }
+    //agrega el estudiante ingresado por terminal a un mapa y una lista
     public boolean agregarEstudiante (EstudianteTitulado ee) throws RutException{
         String rut = ee.getRut();
         String lastChar = Character.toString(rut.charAt(rut.length() - 1));
@@ -124,7 +131,7 @@ public class Carrera {
         }
         return false;
     }
-    
+    //busca el estudiante en el mapa
     public Object buscarEstudiante(String rut){
         /* retorna true si la asignatura NO existe, y false si existe*/
         if(mapAlumnosTotal.containsKey(rut)){
@@ -132,6 +139,7 @@ public class Carrera {
         }
         return null;
     }
+    //recorre la lista y muestra cada estudiante en la carrera
     public void listarEstudiantes(){
         int j = listAlumnosTotal.size();
         if(j == 0){
@@ -152,6 +160,7 @@ public class Carrera {
         }
         System.out.println("");
     }
+    //ve si existe el estudiante y la carrera, para depues agregarlo a las asignaturas vigentes
     public boolean agregarAsignaturaVigente(String rut, String id){
         EstudianteVigente ee = (EstudianteVigente)buscarEstudiante(rut);
         Asignatura aa = buscarAsignatura(id);
@@ -165,6 +174,7 @@ public class Carrera {
 
         return ee.agregarAsignaturaVigente(aa.getNombre(), id);
     }
+    //realiza lo mismo del anterior solo que se le pasa por parametro el rut del estudiante 
     public boolean agregarAsignaturaVigente(String rut)throws IOException{
         EstudianteVigente ee = (EstudianteVigente)buscarEstudiante(rut);
         if(ee == null){
@@ -183,6 +193,7 @@ public class Carrera {
 
         return ee.agregarAsignaturaVigente(aa.getNombre(), aa.getId());
     }
+    //ve si existe el estudiante y la asignatura, para luego agregarla a las asignaturas aprobadas
     public boolean agregarAsignatura(String rut, String id){
         EstudianteVigente ee = (EstudianteVigente)buscarEstudiante(rut);
         Asignatura aa = buscarAsignatura(id);
@@ -198,6 +209,7 @@ public class Carrera {
         return false;
         
     }
+    //realiza lo mismo que el anterior, solo que se le pasa el rut del estudiante
     public boolean agregarAsignatura(String rut)throws IOException{
         EstudianteVigente ee = (EstudianteVigente)buscarEstudiante(rut);
         if(ee == null){
@@ -215,7 +227,7 @@ public class Carrera {
         Asignatura aa = buscarAsignatura(id);
         return ee.agregarAsignatura(aa.getNombre(), aa.getId(), aa.getNota());
     }
-    
+    //busca la asignatura aprobada y modifica su nota
     public boolean modificarNota(String rut) throws IOException, NotaException{
         BufferedReader leer = new BufferedReader(new InputStreamReader(System.in));
         EstudianteVigente ee = (EstudianteVigente)buscarEstudiante(rut);

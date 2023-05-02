@@ -13,26 +13,29 @@ import java.util.*;
  * @author seba
  */
 public class Estudiante {
+    //se inicializan las variables
     private String nombre;
     private String rut;
     private String annoIngreso;
     private ArrayList<Asignatura> asignaturasAprobadas = new ArrayList();
     
     
-
+    //se crea el constructor, al cual, se le pasan los parametros
     public Estudiante(String nombreEstudiante, String annoIngreso, String rut) {
         this.nombre = nombreEstudiante;
         this.annoIngreso = annoIngreso;
         this.rut = rut;
         asignaturasAprobadas = new ArrayList();
     }
+    //se crea un construtor con parametro nulos
     public Estudiante() {
         this.nombre = null;
         this.annoIngreso = null;
         this.rut = null;
         asignaturasAprobadas = new ArrayList();
     }
-
+    
+    //se crean los sets y gets de cada variable
     public String getNombre() {
         return nombre;
     }
@@ -52,8 +55,7 @@ public class Estudiante {
         this.annoIngreso = annoIngreso;
     }
 
-    
-
+    //muestra todas las asignaturas aprobadas de una lista
     public void mostrarAprobadas (){
         int j = asignaturasAprobadas.size();
         if(j == 0){
@@ -84,7 +86,7 @@ public class Estudiante {
         return(false);
    }
 
-    
+    //busca la asignatura ingresada en la lista de aprobadas
     public Asignatura buscarAsignatura(String id){
         int j = asignaturasAprobadas.size();
         Asignatura aux;
@@ -96,7 +98,7 @@ public class Estudiante {
         }
         return null;
     }
-    
+    //busca la asignatura ingresada y verifica que la nota ingresada sea valida 
     public boolean modificarNota(String id) throws IOException, NotaException{
         BufferedReader leer = new BufferedReader(new InputStreamReader(System.in));
         Asignatura aa = buscarAsignatura(id);
@@ -118,6 +120,7 @@ public class Estudiante {
         }
         return false;
     }
+    //realiza lo mismo que la anterior solo que a esta no le pasan el id de la asignatura
     public boolean modificarNota() throws IOException, NotaException{
         BufferedReader leer = new BufferedReader(new InputStreamReader(System.in));
         mostrarAprobadas();
@@ -144,10 +147,11 @@ public class Estudiante {
         }
         return false;
     }
-
+    //retorna true si el año de ingreso es igual al del estudiante de lo contrario false
     public boolean mostrarPorAnno(String an){
         return this.annoIngreso.equals(an);
     }
+    //busca la asignatura y retorna true si cumple que es mayor o igual
     public boolean mostarPorNotaMin(int nota, String id){
         Asignatura aa = buscarAsignatura(id);
         if (aa == null)
@@ -158,8 +162,9 @@ public class Estudiante {
         return false;
     }
     
+    //muestra los datos del estudiante
     public void identificarse(){
-        System.out.println("Estudiante titulado");
+        System.out.println("Estudiante");
         System.out.println(getNombre()+" "+getRut());
         System.out.println("");
     }

@@ -9,22 +9,25 @@ package copiaavancecurricular;
  * @author seba
  */
 
+// se importan los paquetes
 import java.io.*;
 import java.io.FileWriter;
 
 
 public class CopiaAvanceCurricular {
+    //se crea una vairable de instacia
     static Carrera miCarrera;
 
     public static void main(String[] args) throws IOException, RutException, NotaException {
         int opcion;
         boolean salir = true;
+        //se inicializa nuestra carrera
         miCarrera = new Carrera(); 
         BufferedReader leer = new BufferedReader(new InputStreamReader(System.in));
         
-        /*System.out.println("**************************************************");
+        System.out.println("**************************************************");
         System.out.println("BIENVENIDO");
-        System.out.println("**************************************************");*/
+        System.out.println("**************************************************");
         
         //llamado de funciones para leer los csvs
         leerAlumno();
@@ -71,63 +74,54 @@ public class CopiaAvanceCurricular {
                 case 4:{
                     System.out.println("_________________________________________________");
                     agregarAsignaturaVigente();
-                    //mostrarDatosEstudiante();
                     System.out.println("_________________________________________________");
                     break;
                 }
                 case 5:{
                     System.out.println("_________________________________________________");
                     modificarNota();
-                    //mostrarEstudiantes();
                     System.out.println("_________________________________________________");
                     break;
                 }
                 case 6:{
                     System.out.println("_________________________________________________");
                     eliminarAsignatura();
-                    //mostrarAsignaturas();
                     System.out.println("_________________________________________________");
                     break;
                 }
                 case 7:{
                     System.out.println("_________________________________________________");
                     mostrarEstudiantes();
-                    //eliminarAsignatura();
                     System.out.println("_________________________________________________");
                     break;
                 }
                 case 8:{
                     System.out.println("_________________________________________________");
                     mostrarAsignaturas();
-                    //modificarNota();
                     System.out.println("_________________________________________________");
                     break; 
                 }
                 case 9:{
                     System.out.println("_________________________________________________");
                     mostrarVigentes();
-                    //mostarPorNotaMin();
                     System.out.println("_________________________________________________");
                     break;
                 }
                 case 10:{
                     System.out.println("_________________________________________________");
                     mostrarDatosEstudiante();
-                    //mostrarPorAnno();
                     System.out.println("_________________________________________________");
                     break;
                 }
                 case 11:{
                     System.out.println("_________________________________________________");
                     mostarPorNotaMin();
-                    //agregarAsignaturaVigente();
                     System.out.println("_________________________________________________");
                     break;
                 }
                 case 12:{
                     System.out.println("_________________________________________________");
                     mostrarPorAnno();
-                    //mostrarVigentes();
                     System.out.println("_________________________________________________");
                     break;
                 }
@@ -330,6 +324,8 @@ public class CopiaAvanceCurricular {
         System.out.println("No se ha agregado la asignatura aprobada al estudiante");
         System.out.println("");       
     }
+    
+    //agrega una asignatura aprobada al estudiante
     public static void agregarAsignatura() throws IOException{
         BufferedReader leer = new BufferedReader(new InputStreamReader(System.in));
         System.out.println("Funcion de agregar una asignatura aprobada por el estudiante");
@@ -395,6 +391,7 @@ public class CopiaAvanceCurricular {
         System.out.println("");
     }
 
+    //muestra todas las asignaturas vigentes de un estudiante vigente
     public static void mostrarVigentes() throws IOException{
         BufferedReader leer = new BufferedReader(new InputStreamReader(System.in));
         System.out.println("Funcion mostrar info del estudiante\n");
@@ -429,6 +426,7 @@ public class CopiaAvanceCurricular {
         }
     }
     
+    //elimina una asignatura vigente
     public static void eliminarAsignatura() throws IOException{
         BufferedReader leer = new BufferedReader(new InputStreamReader(System.in));
         System.out.println("Ingrese rut del Estudiante:");
@@ -437,6 +435,8 @@ public class CopiaAvanceCurricular {
         String id = leer.readLine();
         miCarrera.eliminarAsignatura(rut, id);
     }
+    
+    //muestra todos los estudiantes del año ingresado
     public static void mostrarPorAnno() throws IOException{
         BufferedReader leer = new BufferedReader(new InputStreamReader(System.in));
         System.out.println("Ingrese anno de ingreso: ");
@@ -444,6 +444,8 @@ public class CopiaAvanceCurricular {
         miCarrera.mostrarPorAnno(an);
     }
     
+    
+    //muestra todos los estudiantes con nota mayor o igual a la ingresada en una asignatura especifica
     public static void mostarPorNotaMin() throws IOException{
         BufferedReader leer = new BufferedReader(new InputStreamReader(System.in));
         System.out.println("Ingrese id de la Asignatura:");

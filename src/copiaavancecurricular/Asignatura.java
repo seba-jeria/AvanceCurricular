@@ -17,21 +17,25 @@ package copiaavancecurricular;
  * @author seba
  */
 public class Asignatura {
+    //se incializan las variables
     private String nombre;
     private String id;
     private int nota;
     
+    //se crea el contructor, al cual se le pasan los parametros
     public Asignatura(String nombreAsignatura, String idAsignatura, int nota) {
         this.nombre = nombreAsignatura;
         this.id = idAsignatura;
         this.nota = nota;
     }
+    //se crea el constructor, al cual no se le pasa ningun parametro
     public Asignatura(String nombreAsignatura, String idAsignatura) {
         this.nombre = nombreAsignatura;
         this.id = idAsignatura;
         this.nota = 40;
     }
     
+    //se crean los sets y gets
     public Asignatura(){
         this.nombre = null;
         this.id = null;
@@ -58,6 +62,7 @@ public class Asignatura {
         return nota;
     }
     
+    //comprueba que la nota sea ingresada correctamente y la asigna a la variable correspondiente
     public void setNota(Double nota){
         double redondeado = Math.round(nota * 10) / 10.0;
 
